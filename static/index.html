@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASM Candidate Ranking &amp; Due Diligence System</title>
+  <meta name="description" content="Official Academy of Sciences Malaysia (ASM) Candidate Assessment, Ranking, and Due Diligence System" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="brand-section">
+          <div class="brand-logo-badge" title="Akademi Sains Malaysia">ASM</div>
+          <div class="brand-titles">
+            <h1>Academy of Sciences Malaysia</h1>
+            <p>Candidate Ranking &amp; Due Diligence System</p>
+          </div>
+        </div>
+
+        <div class="user-controls" id="userControls">
+          <!-- Populated dynamically by App.updateHeaderAuth() -->
+          <a href="#/login" class="btn btn-gold btn-sm">🔒 Login</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="main-nav" aria-label="Main Navigation">
+      <div class="nav-inner">
+        <a href="#/home" class="nav-link active">🏠 Home</a>
+        <a href="#/ranking" class="nav-link">⚖️ Ranking Exercise</a>
+        <a href="#/candidates" class="nav-link">👥 Candidate List</a>
+        <a href="#/due-diligence" class="nav-link">📋 Due Diligence</a>
+        <a href="#/information" class="nav-link">📖 Other Information</a>
+
+        <!-- Administrator & Reviewer Navigation Links -->
+        <span class="nav-separator admin-nav-item hidden"></span>
+        <a href="#/admin" class="nav-link admin-nav-item hidden">🏛️ Administration</a>
+        <a href="#/admin/results" class="nav-link admin-nav-item hidden">📊 Ranking Results</a>
+        <a href="#/admin/reports" class="nav-link admin-nav-item hidden">📑 Reports</a>
+        <a href="#/admin/audit" class="nav-link admin-nav-item hidden" data-admin-only="true">🛡️ Audit Log</a>
+      </div>
+    </nav>
+
+    <!-- Main Dynamic Application Content Container -->
+    <main class="main-content" id="mainContent">
+      <div style="text-align: center; padding: 60px;">
+        <p>Loading application...</p>
+      </div>
+    </main>
+
+    <!-- Reusable Candidate Information Pop-up Modal Component -->
+    <div id="candidateModalBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-candidate-name">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h2>Candidate Nomination Dossier</h2>
+          <button type="button" class="modal-close-btn" onclick="CandidateModal.close()" aria-label="Close dialog">×</button>
+        </div>
+        <div class="modal-body" id="candidateModalBody">
+          <!-- Populated dynamically by CandidateModal.open(candidateId) -->
+        </div>
+        <div class="modal-footer" id="candidateModalFooter">
+          <!-- Populated dynamically by CandidateModal.render() -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <div class="footer-confidentiality">
+          🔒 STATUTORY CONFIDENTIALITY NOTICE: Information contained within this portal is strictly confidential under the Academy of Sciences Malaysia Act 1994.
+        </div>
+        <div>
+          &copy; 2026 Academy of Sciences Malaysia (ASM). All rights reserved. • Candidate Assessment &amp; Governance Division
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/candidate-modal.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

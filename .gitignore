@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite Databases & temporary files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite3
+
+# Uploaded files (keep folder structure)
+uploads/*
+!uploads/.gitkeep
+
+# Environment variables & secrets
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Operating System files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,3 @@
+# ASM Candidate Ranking & Due Diligence System
+# Built 100% on Python 3 Standard Library with zero external package dependencies.
+# This file is provided for PaaS/Cloud platforms (Render, Railway, Heroku, etc.) to detect the Python runtime.
