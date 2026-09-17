@@ -22,7 +22,7 @@
             </p>
         </div>
 
-        <div class="flex items-center space-x-3">
+        <div class="flex flex-wrap items-center gap-3">
             <a href="{{ route('admin.due-diligence.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold shadow-xs transition">
                 <svg class="w-4 h-4 mr-1.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -35,6 +35,21 @@
                 </svg>
                 View Full Candidate Profile
             </a>
+
+            <form method="POST" 
+                  action="{{ route('admin.due-diligence.destroy', $submission) }}" 
+                  onsubmit="return confirm('Are you sure you want to permanently delete this due diligence submission (#{{ $submission->id }}) for candidate {{ addslashes($submission->candidate->candidate_name) }}? All attached documents and feedback notes will be deleted. This action cannot be undone.');" 
+                  class="inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" 
+                        class="inline-flex items-center px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold shadow-sm transition cursor-pointer">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Delete Submission
+                </button>
+            </form>
         </div>
     </div>
 
@@ -237,13 +252,23 @@
 
             {{-- Supporting Documents Hub --}}
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center">
                         <svg class="w-4 h-4 mr-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
                         </svg>
                         Supporting Documents & Evidence ({{ $submission->supportingDocuments->count() }})
                     </h3>
+
+                    @if($submission->supportingDocuments->isNotEmpty())
+                        <a href="{{ route('admin.due-diligence.download-zip', $submission) }}" 
+                           class="inline-flex items-center px-3.5 py-1.5 bg-teal-50 hover:bg-teal-100 border border-teal-300 text-teal-800 rounded-xl text-xs font-bold shadow-2xs transition">
+                            <svg class="w-3.5 h-3.5 mr-1.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <span>Download All ({{ $submission->supportingDocuments->count() }} Files .ZIP)</span>
+                        </a>
+                    @endif
                 </div>
 
                 @if($submission->supportingDocuments->isNotEmpty())
@@ -321,6 +346,38 @@
                         <p class="text-xs text-slate-500 mt-0.5">The submitter did not attach any additional files or evidence for this entry.</p>
                     </div>
                 @endif
+            </div>
+
+            {{-- Danger Zone: Delete Submission --}}
+            <div class="bg-rose-50/50 rounded-2xl border border-rose-200 shadow-sm p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h4 class="text-sm font-bold text-rose-900 flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                            Permanently Delete Submission
+                        </h4>
+                        <p class="text-xs text-rose-700 mt-1 max-w-lg">
+                            Permanently removes this confidential due diligence record (#{{ $submission->id }}), references, and all associated evidence files from server storage. This action cannot be reversed.
+                        </p>
+                    </div>
+
+                    <form method="POST" 
+                          action="{{ route('admin.due-diligence.destroy', $submission) }}" 
+                          onsubmit="return confirm('Are you sure you want to permanently delete this due diligence submission (#{{ $submission->id }}) for candidate {{ addslashes($submission->candidate->candidate_name) }}? All attached documents and feedback notes will be deleted. This action cannot be undone.');" 
+                          class="flex-shrink-0">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" 
+                                class="inline-flex items-center px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-sm transition cursor-pointer">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                            Delete Submission
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

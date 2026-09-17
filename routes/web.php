@@ -159,6 +159,8 @@ Route::middleware(['auth', 'user.active'])->group(function () {
         // Due Diligence Review
         Route::get('/due-diligence', [AdminDueDiligenceController::class, 'index'])->name('due-diligence.index');
         Route::get('/due-diligence/{submission}', [AdminDueDiligenceController::class, 'show'])->name('due-diligence.show');
+        Route::delete('/due-diligence/{submission}', [AdminDueDiligenceController::class, 'destroy'])->name('due-diligence.destroy');
+        Route::get('/due-diligence/{submission}/download-zip', [AdminDueDiligenceController::class, 'downloadZip'])->name('due-diligence.download-zip');
         Route::get('/due-diligence/document/{document}/preview', [AdminDueDiligenceController::class, 'previewDocument'])->name('due-diligence.document.preview');
         Route::get('/due-diligence/document/{document}/download', [AdminDueDiligenceController::class, 'downloadDocument'])->name('due-diligence.document.download');
 

@@ -206,7 +206,7 @@
                             </td>
                             <td class="px-4 py-3.5 align-top">
                                 @if($sub->supportingDocuments->isNotEmpty())
-                                    <div class="space-y-1.5 min-w-[150px]">
+                                    <div class="space-y-2 min-w-[180px]">
                                         @foreach($sub->supportingDocuments as $doc)
                                             @php
                                                 $ext = strtolower(pathinfo($doc->original_filename, PATHINFO_EXTENSION));
@@ -214,37 +214,51 @@
                                                 $isPdf = $ext === 'pdf';
                                                 $sizeKb = round(($doc->file_size ?: 0) / 1024);
                                             @endphp
-                                            <div class="flex items-center justify-between gap-1 p-1.5 bg-slate-50 border border-slate-200 rounded-lg group/doc hover:bg-teal-50/50 hover:border-teal-200 transition">
-                                                <div class="flex items-center min-w-0 mr-1">
+                                            <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl hover:bg-teal-50/50 hover:border-teal-200 transition space-y-1.5">
+                                                <div class="flex items-center min-w-0">
                                                     <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider mr-1.5 flex-shrink-0 {{ $isPdf ? 'bg-rose-100 text-rose-700' : ($isImage ? 'bg-blue-100 text-blue-700' : 'bg-slate-200 text-slate-700') }}">
                                                         {{ $ext ?: 'file' }}
                                                     </span>
                                                     <span class="text-[11px] font-semibold text-slate-800 truncate" title="{{ $doc->original_filename }}">
-                                                        {{ Str::limit($doc->original_filename, 14) }}
+                                                        {{ $doc->original_filename }}
                                                     </span>
                                                     <span class="text-[9px] text-slate-400 ml-1 flex-shrink-0">({{ $sizeKb }}KB)</span>
                                                 </div>
-                                                <div class="flex items-center space-x-1 flex-shrink-0">
+                                                <div class="flex items-center space-x-1.5">
                                                     <a href="{{ route('admin.due-diligence.document.preview', $doc) }}" 
                                                        target="_blank" 
                                                        rel="noopener noreferrer" 
-                                                       class="p-1 text-teal-700 hover:text-teal-900 hover:bg-teal-100 rounded transition" 
-                                                       title="View / Preview Document in new tab">
-                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                       class="inline-flex items-center px-2 py-1 text-[10px] font-semibold text-teal-700 bg-teal-50 border border-teal-200 rounded-lg hover:bg-teal-100 transition shadow-2xs" 
+                                                       title="View / Preview Document">
+                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                                         </svg>
+                                                        <span>Preview</span>
                                                     </a>
                                                     <a href="{{ route('admin.due-diligence.document.download', $doc) }}" 
-                                                       class="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-200 rounded transition" 
-                                                       title="Download Document">
-                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                       class="inline-flex items-center px-2 py-1 text-[10px] font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs" 
+                                                       title="Download {{ $doc->original_filename }}">
+                                                        <svg class="w-3 h-3 mr-1 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                                                         </svg>
+                                                        <span>Download</span>
                                                     </a>
                                                 </div>
                                             </div>
                                         @endforeach
+
+                                        @if($sub->supportingDocuments->count() > 1)
+                                            <div class="pt-1">
+                                                <a href="{{ route('admin.due-diligence.download-zip', $sub) }}" 
+                                                   class="w-full inline-flex items-center justify-center px-2 py-1 text-[10px] font-bold text-teal-800 bg-teal-50 border border-teal-300 rounded-lg hover:bg-teal-100 transition shadow-2xs">
+                                                    <svg class="w-3 h-3 mr-1 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                    </svg>
+                                                    <span>Download All ({{ $sub->supportingDocuments->count() }} files .ZIP)</span>
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
                                 @else
                                     <span class="text-slate-400 italic text-[11px]">No attachments</span>
@@ -254,12 +268,32 @@
                                 {{ $sub->created_at->format('d M Y, h:i A') }}
                             </td>
                             <td class="px-4 py-3.5 align-top text-right whitespace-nowrap">
-                                <a href="{{ route('admin.due-diligence.show', $sub) }}" class="inline-flex items-center px-3 py-1.5 text-xs font-bold text-teal-700 bg-teal-50 border border-teal-200 rounded-xl hover:bg-teal-100 hover:text-teal-800 shadow-2xs transition">
-                                    <span>Review</span>
-                                    <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                </a>
+                                <div class="flex items-center justify-end space-x-1.5">
+                                    <a href="{{ route('admin.due-diligence.show', $sub) }}" 
+                                       class="inline-flex items-center px-2.5 py-1.5 text-xs font-bold text-teal-700 bg-teal-50 border border-teal-200 rounded-xl hover:bg-teal-100 hover:text-teal-800 shadow-2xs transition"
+                                       title="Review submission details">
+                                        <span>Review</span>
+                                        <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </a>
+
+                                    <form method="POST" 
+                                          action="{{ route('admin.due-diligence.destroy', $sub) }}" 
+                                          onsubmit="return confirm('Are you sure you want to permanently delete this due diligence submission (#{{ $sub->id }}) for candidate {{ addslashes($sub->candidate->candidate_name) }}? All attached documents and feedback notes will be deleted. This action cannot be undone.');" 
+                                          class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="inline-flex items-center px-2.5 py-1.5 text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl hover:bg-rose-100 hover:text-rose-800 shadow-2xs transition cursor-pointer"
+                                                title="Delete this due diligence submission">
+                                            <svg class="w-3.5 h-3.5 mr-1 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                            <span>Delete</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
