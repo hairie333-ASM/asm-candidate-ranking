@@ -102,6 +102,7 @@
                                 <td class="py-4 px-4">
                                     @if($candidate->photo_url)
                                         <img src="{{ $candidate->photo_url }}" 
+                                             onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($candidate->candidate_name) }}&background=0D9488&color=fff&size=128';"
                                              alt="{{ $candidate->candidate_name }}" 
                                              class="w-12 h-12 rounded-xl object-cover border border-slate-200 shadow-sm bg-slate-100 cursor-pointer hover:opacity-90"
                                              onclick="openCandidateModal({{ $candidate->id }})">

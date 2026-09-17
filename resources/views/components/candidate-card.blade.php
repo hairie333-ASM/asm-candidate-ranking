@@ -14,6 +14,7 @@
             <div class="flex-shrink-0">
                 @if($candidate->photo_url)
                     <img src="{{ $candidate->photo_url }}" 
+                         onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($candidate->candidate_name) }}&background=0D9488&color=fff&size=256';"
                          alt="{{ $candidate->candidate_name }}" 
                          class="w-36 sm:w-44 h-48 sm:h-56 rounded-2xl object-cover object-top border-2 border-slate-200 shadow-md bg-slate-100 cursor-pointer hover:opacity-95 transition-opacity"
                          onclick="openCandidateModal({{ $candidate->id }})"
@@ -187,6 +188,7 @@
             <div class="relative w-full h-56 bg-slate-100 overflow-hidden flex items-center justify-center border-b border-slate-100">
                 @if($candidate->photo_url)
                     <img src="{{ $candidate->photo_url }}" 
+                         onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($candidate->candidate_name) }}&background=0D9488&color=fff&size=256';"
                          alt="{{ $candidate->candidate_name }}" 
                          class="w-full h-full object-cover object-top transition duration-300 group-hover:scale-105 cursor-pointer"
                          onclick="openCandidateModal({{ $candidate->id }})"

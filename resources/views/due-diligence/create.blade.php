@@ -18,6 +18,7 @@
         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
             @if($candidate->photo_path)
                 <img src="{{ $candidate->photo_path }}" alt="{{ $candidate->candidate_name }}" 
+                     onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($candidate->candidate_name) }}&background=0D9488&color=fff&size=128';"
                      class="w-16 h-16 rounded-xl object-cover border border-slate-200 shadow-xs flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
                      onclick="openCandidateModal({{ $candidate->id }})"
                      title="Click to view candidate info">

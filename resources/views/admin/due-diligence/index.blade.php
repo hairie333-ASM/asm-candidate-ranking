@@ -103,6 +103,7 @@
                                 <div class="flex items-center space-x-2.5">
                                     @if($sub->candidate->photo_path)
                                         <img src="{{ $sub->candidate->photo_path }}" alt="{{ $sub->candidate->candidate_name }}" 
+                                             onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($sub->candidate->candidate_name) }}&background=0D9488&color=fff&size=64';"
                                              class="w-8 h-8 rounded-full object-cover flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
                                              onclick="openCandidateModal({{ $sub->candidate->id }})"
                                              title="Click to view candidate info">

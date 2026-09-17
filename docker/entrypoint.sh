@@ -10,10 +10,20 @@ mkdir -p /var/www/html/storage/framework/cache/data \
          /var/www/html/storage/framework/sessions \
          /var/www/html/storage/framework/views \
          /var/www/html/storage/logs \
+         /var/www/html/storage/app/public/photos \
+         /var/www/html/public/photos \
          /var/www/html/bootstrap/cache
 
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Ensure photos are mirrored between public/photos and storage/app/public/photos
+cp -n /var/www/html/public/photos/* /var/www/html/storage/app/public/photos/ 2>/dev/null || true
+cp -n /var/www/html/storage/app/public/photos/* /var/www/html/public/photos/ 2>/dev/null || true
+
+# Recreate storage symlink with relative path
+rm -rf /var/www/html/public/storage
+php artisan storage:link --force || ln -sfn /var/www/html/storage/app/public /var/www/html/public/storage
+
+chown -R www-data:www-data /var/www/html/storage /var/www/html/public/photos /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/public/photos /var/www/html/bootstrap/cache
 
 # If APP_KEY is set, cache the configuration
 if [ -n "$APP_KEY" ]; then

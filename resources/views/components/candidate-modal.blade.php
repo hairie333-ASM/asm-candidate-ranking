@@ -78,6 +78,7 @@
                     {{-- 1. PICTURE --}}
                     <template x-if="candidate.photo_url">
                         <img :src="candidate.photo_url" 
+                             x-on:error="$el.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(candidate.candidate_name || 'Candidate') + '&background=0D9488&color=fff&size=256'"
                              :alt="candidate.candidate_name || 'Candidate'" 
                              class="h-28 w-28 rounded-2xl object-cover shadow-sm border-2 border-teal-600 bg-slate-100 flex-shrink-0">
                     </template>

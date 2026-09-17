@@ -215,4 +215,22 @@ class CandidateStandardizationTest extends TestCase
             'organisation' => 'Universiti Sains Malaysia',
         ]);
     }
+
+    /**
+     * Verify candidate photos are accessible via both /storage/photos/ and /photos/ routes.
+     */
+    public function test_candidate_photos_are_accessible_via_both_storage_and_direct_routes(): void
+    {
+        // 1. Storage photo route
+        $storageResponse = $this->get('/storage/photos/ainuddin-nuruddin.png');
+        $storageResponse->assertStatus(200);
+
+        // 2. Direct photos route
+        $directResponse = $this->get('/photos/ainuddin-nuruddin.png');
+        $directResponse->assertStatus(200);
+
+        // 3. Non-existent photo returns 404
+        $notFoundResponse = $this->get('/storage/photos/non-existent-candidate-photo-999.png');
+        $notFoundResponse->assertStatus(404);
+    }
 }

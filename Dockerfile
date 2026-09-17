@@ -43,9 +43,11 @@ COPY . .
 # Install production dependencies (skip dev dependencies)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Setup proper permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Setup proper permissions and ensure photo directories exist
+RUN mkdir -p /var/www/html/storage/app/public/photos /var/www/html/public/photos \
+    && cp -n /var/www/html/public/photos/* /var/www/html/storage/app/public/photos/ 2>/dev/null || true \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/public/photos /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/public/photos /var/www/html/bootstrap/cache
 
 # Copy Nginx and entrypoint configs
 COPY docker/nginx.conf /etc/nginx/nginx.conf

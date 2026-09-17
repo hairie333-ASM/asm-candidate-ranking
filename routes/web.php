@@ -40,6 +40,36 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // Candidate API endpoint for interactive profile modal
 Route::get('/api/candidates/{candidate}', [CandidateController::class, 'apiShow'])->name('api.candidates.show');
 
+// Reliable photo asset delivery routes for candidate photos
+Route::get('/storage/photos/{filename}', function (string $filename) {
+    $candidates = [
+        public_path('photos/'.$filename),
+        storage_path('app/public/photos/'.$filename),
+    ];
+
+    foreach ($candidates as $path) {
+        if (file_exists($path)) {
+            return response()->file($path);
+        }
+    }
+
+    abort(404);
+})->where('filename', '[A-Za-z0-9\-_.]+')->name('storage.photos.show');
+
+Route::get('/photos/{filename}', function (string $filename) {
+    $path = public_path('photos/'.$filename);
+    if (file_exists($path)) {
+        return response()->file($path);
+    }
+
+    $storagePath = storage_path('app/public/photos/'.$filename);
+    if (file_exists($storagePath)) {
+        return response()->file($storagePath);
+    }
+
+    abort(404);
+})->where('filename', '[A-Za-z0-9\-_.]+')->name('photos.show');
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Protected Routes
