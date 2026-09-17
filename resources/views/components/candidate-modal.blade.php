@@ -220,22 +220,25 @@
                 }
             },
             openModal(data) {
-                this.isOpen = true;
-                this.errorMessage = '';
+                var self = this;
+                self.isOpen = true;
+                self.errorMessage = '';
 
                 if (data && data.candidate) {
-                    this.candidate = data.candidate;
-                    this.loading = false;
+                    self.candidate = data.candidate;
+                    self.loading = false;
                     return;
                 }
 
                 var candidateId = (data && data.candidateId) ? data.candidateId : data;
                 if (!candidateId) return;
 
-                this.loading = true;
-                this.candidate = {};
+                self.loading = true;
+                self.candidate = {};
 
                 fetch('/api/candidates/' + candidateId, {
+                    method: 'GET',
+                    credentials: 'same-origin',
                     headers: {
                         'Accept': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest'
@@ -248,11 +251,17 @@
                     return response.json();
                 })
                 .then(function(result) {
-                    candidateModalInstance.candidate = result;
-                    candidateModalInstance.loading = false;
+                    self.candidate = result;
+                    self.loading = false;
+                    if (candidateModalInstance) {
+                        candidateModalInstance.candidate = result;
+                        candidateModalInstance.loading = false;
+                    }
                 })
                 .catch(function(error) {
                     console.error('Candidate modal fetch error:', error);
+                    self.errorMessage = 'Unable to load candidate details. Please try again.';
+                    self.loading = false;
                     if (candidateModalInstance) {
                         candidateModalInstance.errorMessage = 'Unable to load candidate details. Please try again.';
                         candidateModalInstance.loading = false;
@@ -268,6 +277,7 @@
 
     // Universal global helper callable from onclick="..." anywhere
     window.openCandidateModal = function(candidateId) {
+        if (!candidateId) return;
         if (candidateModalInstance) {
             candidateModalInstance.openModal({ candidateId: candidateId });
         } else {

@@ -37,6 +37,9 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+// Candidate API endpoint for interactive profile modal
+Route::get('/api/candidates/{candidate}', [CandidateController::class, 'apiShow'])->name('api.candidates.show');
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Protected Routes
@@ -57,7 +60,6 @@ Route::middleware(['auth', 'user.active'])->group(function () {
     // Candidate Search & View (Accessible across ALL 8 disciplines)
     Route::get('/candidates', [CandidateController::class, 'index'])->name('candidates.index');
     Route::get('/candidates/{candidate}', [CandidateController::class, 'show'])->name('candidates.show');
-    Route::get('/api/candidates/{candidate}', [CandidateController::class, 'apiShow'])->name('api.candidates.show');
 
     // Due Diligence (Accessible across ALL 8 disciplines)
     Route::get('/due-diligence', [DueDiligenceController::class, 'index'])->name('due-diligence.index');

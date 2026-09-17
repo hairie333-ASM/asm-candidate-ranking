@@ -198,12 +198,10 @@
                                             <img src="{{ $candidate->photo_path }}" alt="{{ $candidate->candidate_name }}" 
                                                  class="w-10 h-10 rounded-full object-cover border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity"
                                                  onclick="openCandidateModal({{ $candidate->id }})"
-                                                 @click="openCandidateModal({{ $candidate->id }})"
                                                  title="Click to view candidate info">
                                         @else
                                             <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs cursor-pointer hover:bg-slate-300 transition-colors"
                                                  onclick="openCandidateModal({{ $candidate->id }})"
-                                                 @click="openCandidateModal({{ $candidate->id }})"
                                                  title="Click to view candidate info">
                                                 {{ substr($candidate->candidate_name, 0, 2) }}
                                             </div>
@@ -211,7 +209,6 @@
                                         <div>
                                             <button type="button" 
                                                     onclick="openCandidateModal({{ $candidate->id }})"
-                                                    @click="openCandidateModal({{ $candidate->id }})"
                                                     class="text-left group focus:outline-none cursor-pointer">
                                                 <div class="font-bold text-slate-900 group-hover:text-teal-700 underline decoration-teal-500/40 underline-offset-2 transition-colors">{{ $candidate->candidate_name }}</div>
                                             </button>
@@ -227,7 +224,6 @@
                                     <div class="flex items-center justify-end space-x-2">
                                         <button type="button" 
                                                 onclick="openCandidateModal({{ $candidate->id }})"
-                                                @click="openCandidateModal({{ $candidate->id }})"
                                                 class="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 transition shadow-2xs cursor-pointer">
                                             <svg class="w-3.5 h-3.5 mr-1 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>

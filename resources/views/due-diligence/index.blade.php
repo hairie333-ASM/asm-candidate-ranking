@@ -60,7 +60,6 @@
                             <div class="flex items-center space-x-2">
                                 <button type="button" 
                                         onclick="openCandidateModal({{ $sub->candidate->id }})"
-                                        @click="openCandidateModal({{ $sub->candidate->id }})"
                                         class="text-left group focus:outline-none cursor-pointer">
                                     <span class="text-sm font-bold text-slate-900 group-hover:text-teal-700 underline decoration-teal-500/40 underline-offset-2 transition-colors">
                                         {{ $sub->candidate->candidate_name }}
@@ -174,12 +173,10 @@
                                              alt="{{ $candidate->candidate_name }}" 
                                              class="w-10 h-10 rounded-xl object-cover border border-slate-200 shadow-xs cursor-pointer hover:opacity-90 transition-opacity"
                                              onclick="openCandidateModal({{ $candidate->id }})"
-                                             @click="openCandidateModal({{ $candidate->id }})"
                                              title="Click to view candidate info">
                                     @else
                                         <div class="w-10 h-10 rounded-xl bg-teal-800 text-teal-200 flex items-center justify-center font-bold text-xs cursor-pointer shadow-xs hover:bg-teal-700 transition-colors"
                                              onclick="openCandidateModal({{ $candidate->id }})"
-                                             @click="openCandidateModal({{ $candidate->id }})"
                                              title="Click to view candidate info">
                                             {{ substr($candidate->candidate_name, 0, 2) }}
                                         </div>
@@ -187,7 +184,6 @@
                                     <div>
                                         <button type="button" 
                                                 onclick="openCandidateModal({{ $candidate->id }})"
-                                                @click="openCandidateModal({{ $candidate->id }})"
                                                 class="text-left group focus:outline-none cursor-pointer">
                                             <span class="font-bold text-slate-900 group-hover:text-teal-700 text-sm block leading-tight underline decoration-teal-500/40 underline-offset-2 transition-colors">
                                                 {{ $candidate->candidate_name }}
@@ -216,7 +212,6 @@
                                 <div class="flex items-center justify-end space-x-2">
                                     <button type="button" 
                                             onclick="openCandidateModal({{ $candidate->id }})"
-                                            @click="openCandidateModal({{ $candidate->id }})"
                                             class="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 transition shadow-2xs cursor-pointer">
                                         <svg class="w-3.5 h-3.5 mr-1 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>

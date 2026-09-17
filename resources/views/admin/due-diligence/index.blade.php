@@ -105,12 +105,10 @@
                                         <img src="{{ $sub->candidate->photo_path }}" alt="{{ $sub->candidate->candidate_name }}" 
                                              class="w-8 h-8 rounded-full object-cover flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
                                              onclick="openCandidateModal({{ $sub->candidate->id }})"
-                                             @click="openCandidateModal({{ $sub->candidate->id }})"
                                              title="Click to view candidate info">
                                     @else
                                         <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-[10px] flex-shrink-0 cursor-pointer hover:bg-slate-300 transition-colors"
                                              onclick="openCandidateModal({{ $sub->candidate->id }})"
-                                             @click="openCandidateModal({{ $sub->candidate->id }})"
                                              title="Click to view candidate info">
                                             {{ substr($sub->candidate->candidate_name, 0, 2) }}
                                         </div>
@@ -118,7 +116,6 @@
                                     <div>
                                         <button type="button" 
                                                 onclick="openCandidateModal({{ $sub->candidate->id }})"
-                                                @click="openCandidateModal({{ $sub->candidate->id }})"
                                                 class="text-left group focus:outline-none cursor-pointer">
                                             <span class="font-bold text-slate-900 group-hover:text-teal-700 text-xs block leading-tight underline decoration-teal-500/40 underline-offset-2 transition-colors">
                                                 {{ $sub->candidate->candidate_name }}

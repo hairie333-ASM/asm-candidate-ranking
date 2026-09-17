@@ -104,12 +104,10 @@
                                         <img src="{{ $candidate->photo_url }}" 
                                              alt="{{ $candidate->candidate_name }}" 
                                              class="w-12 h-12 rounded-xl object-cover border border-slate-200 shadow-sm bg-slate-100 cursor-pointer hover:opacity-90"
-                                             onclick="openCandidateModal({{ $candidate->id }})"
-                                             @click="openCandidateModal({{ $candidate->id }})">
+                                             onclick="openCandidateModal({{ $candidate->id }})">
                                     @else
                                         <div class="w-12 h-12 rounded-xl bg-teal-800 text-teal-200 flex items-center justify-center font-bold text-sm cursor-pointer shadow-xs hover:bg-teal-700 transition-colors"
-                                             onclick="openCandidateModal({{ $candidate->id }})"
-                                             @click="openCandidateModal({{ $candidate->id }})">
+                                             onclick="openCandidateModal({{ $candidate->id }})">
                                             {{ substr($candidate->candidate_name, 0, 2) }}
                                         </div>
                                     @endif
@@ -119,7 +117,6 @@
                                 <td class="py-4 px-6">
                                     <button type="button" 
                                             onclick="openCandidateModal({{ $candidate->id }})"
-                                            @click="openCandidateModal({{ $candidate->id }})"
                                             class="text-left group focus:outline-none cursor-pointer">
                                         <span class="block font-bold text-slate-900 group-hover:text-teal-700 transition-colors underline decoration-teal-500/40 underline-offset-2">
                                             {{ $candidate->candidate_name }}

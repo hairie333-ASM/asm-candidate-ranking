@@ -191,4 +191,28 @@ class CandidateStandardizationTest extends TestCase
             'qualifications_professional_memberships' => 'PhD in Chemical Engineering',
         ]);
     }
+
+    /**
+     * Verify modal API endpoint is publicly accessible so reverse proxy / cross-origin / Safari cookies do not cause 401.
+     */
+    public function test_candidate_modal_api_is_accessible_without_session_auth_to_prevent_render_modal_errors(): void
+    {
+        $candidate = Candidate::create([
+            'discipline_id' => $this->discipline->id,
+            'candidate_name' => 'Dr. Test Candidate',
+            'candidate_title' => 'Associate Professor',
+            'organisation' => 'Universiti Sains Malaysia',
+            'display_order' => 1,
+            'active' => true,
+        ]);
+
+        // Unauthenticated guest request
+        $response = $this->get(route('api.candidates.show', $candidate));
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'id' => $candidate->id,
+            'candidate_name' => 'Dr. Test Candidate',
+            'organisation' => 'Universiti Sains Malaysia',
+        ]);
+    }
 }
