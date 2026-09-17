@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\AuditService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -172,5 +173,35 @@ class AdminUserController extends Controller
         );
 
         return back()->with('success', "Password for {$user->name} has been reset successfully.");
+    }
+
+    public function destroy(Request $request, User $user): RedirectResponse
+    {
+        if ($user->id === $request->user()?->id) {
+            return back()->with('error', 'You cannot delete your own account.');
+        }
+
+        if ($user->isAdmin() && User::where('role', 'administrator')->count() <= 1) {
+            return back()->with('error', 'Cannot delete the only remaining administrator account.');
+        }
+
+        $userName = $user->name;
+        $userEmail = $user->email;
+        $userRole = $user->role;
+        $userId = $user->id;
+
+        DB::transaction(function () use ($user) {
+            DB::table('sessions')->where('user_id', $user->id)->delete();
+            $user->delete();
+        });
+
+        $this->auditService->log(
+            action: 'User Deleted',
+            recordType: 'User',
+            recordId: $userId,
+            description: "Deleted user {$userName} ({$userEmail}) with role '{$userRole}'"
+        );
+
+        return redirect()->route('admin.users.index')->with('success', "User {$userName} has been deleted successfully.");
     }
 }

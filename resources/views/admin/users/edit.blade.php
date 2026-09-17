@@ -70,11 +70,29 @@
                 <label for="active" class="text-xs font-semibold text-slate-700">Account is Active</label>
             </div>
 
-            <div class="pt-4 border-t border-slate-200 flex items-center justify-end space-x-3">
-                <a href="{{ route('admin.users.index') }}" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition">Cancel</a>
-                <button type="submit" class="px-6 py-2.5 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm transition">Save Changes</button>
+            <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+                <div>
+                    @if($user->id !== auth()->id())
+                        <button type="button" 
+                                onclick="if(confirm('Are you sure you want to permanently delete user \'{{ addslashes($user->name) }}\'? This action cannot be undone.')) { document.getElementById('delete-user-form').submit(); }"
+                                class="px-4 py-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl hover:bg-rose-100 hover:text-rose-800 transition cursor-pointer">
+                            Delete User
+                        </button>
+                    @endif
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="{{ route('admin.users.index') }}" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition">Cancel</a>
+                    <button type="submit" class="px-6 py-2.5 text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-sm transition">Save Changes</button>
+                </div>
             </div>
         </form>
+
+        @if($user->id !== auth()->id())
+            <form id="delete-user-form" method="POST" action="{{ route('admin.users.destroy', $user) }}" class="hidden">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endif
     </div>
 </div>
 @endsection

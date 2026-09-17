@@ -121,6 +121,19 @@
                                 <a href="{{ route('admin.users.edit', $u) }}" class="inline-flex items-center px-2.5 py-1 text-xs font-semibold text-teal-700 bg-teal-50 border border-teal-200 rounded-lg hover:bg-teal-100 transition">
                                     Edit
                                 </a>
+                                @if($u->id === auth()->id())
+                                    <span class="inline-flex items-center px-2.5 py-1 text-xs font-medium text-slate-400 bg-slate-100 border border-slate-200 rounded-lg cursor-not-allowed" title="You cannot delete your own account">
+                                        Delete
+                                    </span>
+                                @else
+                                    <form method="POST" action="{{ route('admin.users.destroy', $u) }}" class="inline" onsubmit="return confirm('Are you sure you want to delete user \'{{ addslashes($u->name) }}\' ({{ addslashes($u->email) }})? This action cannot be undone.');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center px-2.5 py-1 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg hover:bg-rose-100 hover:text-rose-800 transition cursor-pointer" title="Delete User">
+                                            Delete
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @empty
