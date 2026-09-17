@@ -80,10 +80,10 @@
                         <img :src="candidate.photo_url" 
                              x-on:error="$el.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(candidate.candidate_name || 'Candidate') + '&background=0D9488&color=fff&size=256'"
                              :alt="candidate.candidate_name || 'Candidate'" 
-                             class="h-28 w-28 rounded-2xl object-cover shadow-sm border-2 border-teal-600 bg-slate-100 flex-shrink-0">
+                             class="w-28 h-36 rounded-2xl object-cover object-top shadow-sm border-2 border-teal-600 bg-slate-100 flex-shrink-0">
                     </template>
                     <template x-if="!candidate.photo_url">
-                        <div class="h-28 w-28 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400 flex flex-col items-center justify-center border-2 border-slate-300 shadow-sm flex-shrink-0">
+                        <div class="w-28 h-36 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400 flex flex-col items-center justify-center border-2 border-slate-300 shadow-sm flex-shrink-0">
                             <svg class="w-10 h-10 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>

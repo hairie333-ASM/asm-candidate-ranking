@@ -184,36 +184,39 @@
     {{-- STANDARD CARD LAYOUT (For multi-candidate grids in Directory / Admin) --}}
     <div class="h-full flex flex-col justify-between bg-white rounded-2xl shadow-sm border border-slate-200 hover:border-teal-400/60 hover:shadow-md transition-all overflow-hidden group">
         <div>
-            {{-- 1. PICTURE --}}
-            <div class="relative w-full h-56 bg-slate-100 overflow-hidden flex items-center justify-center border-b border-slate-100">
-                @if($candidate->photo_url)
-                    <img src="{{ $candidate->photo_url }}" 
-                         onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($candidate->candidate_name) }}&background=0D9488&color=fff&size=256';"
-                         alt="{{ $candidate->candidate_name }}" 
-                         class="w-full h-full object-cover object-top transition duration-300 group-hover:scale-105 cursor-pointer"
-                         onclick="openCandidateModal({{ $candidate->id }})"
-                         title="Click to view candidate info">
-                @else
-                    <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400 cursor-pointer"
-                         onclick="openCandidateModal({{ $candidate->id }})"
-                         title="Click to view candidate info">
-                        <svg class="w-16 h-16 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                        <span class="text-[11px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">No Photo Provided</span>
-                    </div>
-                @endif
-
+            {{-- 1. PICTURE (Dedicated portrait frame with natural aspect ratio, preventing distortion and severe cropping) --}}
+            <div class="relative w-full py-4 px-4 bg-gradient-to-b from-slate-100/80 via-slate-50 to-white flex items-center justify-center border-b border-slate-100">
                 {{-- Candidate ID & Active badge overlay --}}
-                <div class="absolute top-3 right-3 flex items-center gap-1.5">
+                <div class="absolute top-3 right-3 flex items-center gap-1.5 z-10">
                     @if($mode === 'admin')
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs {{ $candidate->active ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white' }}">
                             {{ $candidate->active ? 'Active' : 'Inactive' }}
                         </span>
                     @endif
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-900/70 text-white backdrop-blur-xs shadow-xs">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-900/80 text-white backdrop-blur-xs shadow-xs">
                         ID #{{ $candidate->id }}
                     </span>
+                </div>
+
+                {{-- Framed Portrait Image (Standard 3:4 portrait ratio, 144px x 192px) --}}
+                <div class="relative w-36 h-48 rounded-2xl overflow-hidden border-2 border-white shadow-md bg-slate-100 flex-shrink-0 group-hover:shadow-lg transition">
+                    @if($candidate->photo_url)
+                        <img src="{{ $candidate->photo_url }}" 
+                             onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($candidate->candidate_name) }}&background=0D9488&color=fff&size=256';"
+                             alt="{{ $candidate->candidate_name }}" 
+                             class="w-full h-full object-cover object-top transition duration-300 group-hover:scale-105 cursor-pointer"
+                             onclick="openCandidateModal({{ $candidate->id }})"
+                             title="Click to view candidate info">
+                    @else
+                        <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400 cursor-pointer"
+                             onclick="openCandidateModal({{ $candidate->id }})"
+                             title="Click to view candidate info">
+                            <svg class="w-12 h-12 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                            <span class="text-[10px] font-semibold text-slate-400 mt-1 uppercase tracking-wider text-center px-1">No Photo Provided</span>
+                        </div>
+                    @endif
                 </div>
             </div>
 
