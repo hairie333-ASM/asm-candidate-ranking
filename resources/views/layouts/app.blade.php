@@ -205,6 +205,9 @@
                                 <a href="{{ route('admin.reports.index') }}" class="px-3 py-1.5 rounded-md text-xs font-medium {{ request()->routeIs('admin.reports.*') ? 'bg-[#008442] text-white font-semibold' : 'text-slate-200 hover:bg-[#302556] hover:text-white' }}">
                                     Reports
                                 </a>
+                                <a href="{{ route('admin.due-diligence.index') }}" class="px-3 py-1.5 rounded-md text-xs font-medium {{ request()->routeIs('admin.due-diligence.*') ? 'bg-[#008442] text-white font-semibold' : 'text-slate-200 hover:bg-[#302556] hover:text-white' }}">
+                                    Due Diligence
+                                </a>
                                 <a href="{{ route('admin.audit-logs.index') }}" class="px-3 py-1.5 rounded-md text-xs font-medium {{ request()->routeIs('admin.audit-logs.*') ? 'bg-[#008442] text-white font-semibold' : 'text-slate-200 hover:bg-[#302556] hover:text-white' }}">
                                     Audit Logs
                                 </a>
@@ -264,6 +267,7 @@
                             <a href="{{ route('admin.candidates.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-slate-800">Candidates</a>
                             <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-slate-800">Users</a>
                             <a href="{{ route('admin.reports.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-slate-800">Reports</a>
+                            <a href="{{ route('admin.due-diligence.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-slate-800">Due Diligence Review</a>
                             <a href="{{ route('admin.audit-logs.index') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-slate-800">Audit Logs</a>
                         </div>
                     @endif

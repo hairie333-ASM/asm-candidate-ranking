@@ -54,11 +54,14 @@
             <span class="text-2xl font-black text-emerald-600 mt-1 block">{{ $stats['total_submissions'] }}</span>
             <span class="text-[10px] text-slate-500">Completed ballots</span>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
-            <span class="text-[11px] font-bold text-slate-400 uppercase block">Due Diligence</span>
+        <a href="{{ route('admin.due-diligence.index') }}" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs hover:border-amber-400 hover:shadow-sm transition block group">
+            <span class="text-[11px] font-bold text-slate-400 uppercase block group-hover:text-amber-600 transition-colors">Due Diligence</span>
             <span class="text-2xl font-black text-amber-600 mt-1 block">{{ $stats['total_due_diligence'] }}</span>
-            <span class="text-[10px] text-slate-500">Confidential entries</span>
-        </div>
+            <span class="text-[10px] text-slate-500 flex items-center justify-between">
+                <span>Confidential entries</span>
+                <span class="text-amber-600 font-bold">&rarr;</span>
+            </span>
+        </a>
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
             <span class="text-[11px] font-bold text-slate-400 uppercase block">Total Users</span>
             <span class="text-2xl font-black text-slate-900 mt-1 block">{{ $stats['total_users'] }}</span>
@@ -148,7 +151,7 @@
     </div>
 
     {{-- Quick Admin Navigation Grid --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
         <a href="{{ route('admin.users.index') }}" class="p-5 bg-white rounded-2xl border border-slate-200 hover:border-teal-500 shadow-xs hover:shadow-md transition">
             <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center font-bold mb-3">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,6 +172,16 @@
             <p class="text-xs text-slate-500 mt-1">Create, edit, and link OneDrive candidate dossiers.</p>
         </a>
 
+        <a href="{{ route('admin.due-diligence.index') }}" class="p-5 bg-white rounded-2xl border border-slate-200 hover:border-amber-500 shadow-xs hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold mb-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+            <h3 class="font-bold text-sm text-slate-900">Due Diligence Review</h3>
+            <p class="text-xs text-slate-500 mt-1">Inspect voter feedback, integrity disclosures, and attachments.</p>
+        </a>
+
         <a href="{{ route('admin.exercises.index') }}" class="p-5 bg-white rounded-2xl border border-slate-200 hover:border-teal-500 shadow-xs hover:shadow-md transition">
             <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold mb-3">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,7 +193,7 @@
         </a>
 
         <a href="{{ route('admin.audit-logs.index') }}" class="p-5 bg-white rounded-2xl border border-slate-200 hover:border-teal-500 shadow-xs hover:shadow-md transition">
-            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold mb-3">
+            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold mb-3">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                 </svg>
