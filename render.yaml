@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: asm-selection-exercise
+    runtime: docker
+    plan: free
+    region: singapore # Closest region to Malaysia for minimal latency
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    healthCheckPath: /up
+    envVars:
+      - key: APP_NAME
+        value: "Selection Exercise for New Election Fellow"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_PORT
+        value: 6543
+      - key: DB_DATABASE
+        value: postgres
+      - key: DB_SSLMODE
+        value: require
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: CACHE_STORE
+        value: file
+      - key: RUN_MIGRATIONS
+        value: "true"
+      # Required secrets to be provided in Render dashboard:
+      # - APP_KEY
+      # - APP_URL
+      # - DB_HOST
+      # - DB_USERNAME
+      # - DB_PASSWORD
