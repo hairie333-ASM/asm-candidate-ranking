@@ -39,7 +39,7 @@
         <div class="bg-gradient-to-r from-slate-900 via-[#302556] to-teal-950 px-6 sm:px-8 py-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-teal-500/20 text-teal-200 border border-teal-400/30">
-                    Official Communiqué &bull; {{ $dossier['code'] ?? $discipline->code }}
+                    Official Announcement &bull; {{ $dossier['code'] ?? $discipline->code }}
                 </span>
                 <h2 class="text-lg sm:text-xl font-bold mt-1 text-white">
                     {{ $dossier['full_name'] ?? $discipline->discipline_name }}

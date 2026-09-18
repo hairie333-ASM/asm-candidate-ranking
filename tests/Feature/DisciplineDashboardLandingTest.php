@@ -354,6 +354,6 @@ class DisciplineDashboardLandingTest extends TestCase
         $previewResponse = $this->actingAs($admin)->get('/dashboard?preview_discipline='.$discipline->id);
         $previewResponse->assertStatus(200);
         $previewResponse->assertSee('ITCS Discipline Group');
-        $previewResponse->assertSee('Official Communiqué &bull; ITCS', false);
+        $previewResponse->assertSee('Official Announcement &bull; ITCS', false);
     }
 }

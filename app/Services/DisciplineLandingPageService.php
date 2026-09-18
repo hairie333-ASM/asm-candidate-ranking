@@ -165,7 +165,7 @@ class DisciplineLandingPageService
             'nominees_intro' => 'Please be reminded, the shortlisted nominees have the merit and eligible for election as Fellows. The nominees in alphabetical order are:',
             'shortlisted_nominees' => [
                 'Ms Chee Yoke Ling',
-                'Profesor TPr Dr Goh Hong Ching',
+                'Professor TPr Dr Goh Hong Ching',
                 'Madam Hazami Habib',
                 "Professor Dato' Dr Norzaini Azman",
                 'Professor Dr Santha Vaithilingam',
