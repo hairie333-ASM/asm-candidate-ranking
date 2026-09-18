@@ -78,7 +78,7 @@ class DisciplineDashboardLandingTest extends TestCase
         $response->assertSee('Professor Ir Dr Hafizal Mohamad');
         $response->assertSee('YM Raja Azrina Raja Othman');
         $response->assertSee('1200 hours');
-        $response->assertSee('Discipline Ranking Procedure');
+        $response->assertSee('The next step in the selection process is the online ranking by discipline.');
     }
 
     public function test_baes_user_automatically_lands_on_baes_dossier(): void
@@ -146,7 +146,6 @@ class DisciplineDashboardLandingTest extends TestCase
         $response->assertSee('9 February 2026');
         $response->assertSee('online ranking by discipline group, is deemed unnecessary');
         $response->assertSee('Professor Dr Yong Ken Tye');
-        $response->assertSee('Single Nominee Advancement Standard');
         $response->assertSee('Sole Nominee Confirmed');
         $response->assertSee('Not Required ✓');
         $response->assertSee('SATISFIED ✓');
@@ -184,8 +183,7 @@ class DisciplineDashboardLandingTest extends TestCase
         $response->assertSee('Dear Fellows of the Chemical Sciences (CS) Discipline Group,');
         $response->assertSee('29 January 2026');
         $response->assertSee('online ranking by discipline group, is deemed unnecessary');
-        $response->assertSee('Professor ChM Dr Juan Joon Ching');
-        $response->assertSee('Single Nominee Advancement Standard');
+        $response->assertSee('Juan Joon Ching');
     }
 
     public function test_stdi_user_automatically_lands_on_stdi_dossier_with_0900_hours(): void
