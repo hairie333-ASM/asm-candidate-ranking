@@ -35,7 +35,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Candidate API endpoint for interactive profile modal
 Route::get('/api/candidates/{candidate}', [CandidateController::class, 'apiShow'])->name('api.candidates.show');

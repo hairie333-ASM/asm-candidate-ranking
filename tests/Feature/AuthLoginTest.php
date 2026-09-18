@@ -79,4 +79,30 @@ class AuthLoginTest extends TestCase
         $response->assertRedirect('/dashboard');
         $this->assertAuthenticatedAs($this->user);
     }
+
+    public function test_user_can_logout_via_post(): void
+    {
+        $response = $this->actingAs($this->user)->post('/logout');
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHas('status', 'You have been logged out securely.');
+        $this->assertGuest();
+    }
+
+    public function test_user_can_logout_via_get(): void
+    {
+        $response = $this->actingAs($this->user)->get('/logout');
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHas('status', 'You have been logged out securely.');
+        $this->assertGuest();
+    }
+
+    public function test_guest_accessing_logout_redirects_to_login(): void
+    {
+        $response = $this->get('/logout');
+
+        $response->assertRedirect('/login');
+        $this->assertGuest();
+    }
 }
