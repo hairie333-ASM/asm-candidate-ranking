@@ -89,7 +89,7 @@
             <div class="flex items-center justify-between h-20">
                 <!-- Branding -->
                 <div class="flex items-center space-x-3">
-                    <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
+                    <a href="{{ Auth::check() ? route('dashboard') : route('home') }}" class="flex items-center space-x-3 group">
                         <div class="bg-white rounded-lg p-1.5 shadow-sm border border-white/20 flex items-center justify-center">
                             <img src="{{ asset('images/asm-logo-horizontal.png') }}" alt="Academy of Sciences Malaysia" class="h-9 sm:h-10 w-auto object-contain">
                         </div>

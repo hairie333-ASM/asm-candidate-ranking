@@ -36,6 +36,10 @@ class Discipline extends Model
             return $matches[1];
         }
 
+        if (preg_match('/\(([A-Z]+)\)/', $this->discipline_name, $matches)) {
+            return $matches[1];
+        }
+
         return 'DISC-'.str_pad((string) $this->id, 2, '0', STR_PAD_LEFT);
     }
 
