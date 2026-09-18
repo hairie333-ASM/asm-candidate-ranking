@@ -68,26 +68,64 @@
     </div>
 
     {{-- Results Summary Card --}}
-        @php
-            $isSingleDiscipline = ($results['is_single_candidate'] ?? false) || count($results['candidates_results']) === 1;
-        @endphp
-        <div class="bg-gradient-to-r from-slate-900 to-teal-950 px-6 py-4 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    @php
+        $isSingleDiscipline = ($results['is_single_candidate'] ?? false) || count($results['candidates_results']) === 1;
+    @endphp
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8" x-data="{ viewMode: 'vertical' }">
+        <div class="bg-gradient-to-r from-slate-900 to-teal-950 px-6 py-4 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-teal-500/20 text-teal-200 border border-teal-400/30">
-                    {{ $results['discipline']->discipline_name }}
-                </span>
-                <h2 class="text-lg font-bold mt-1">Aggregated Candidate Preference Standings</h2>
-            </div>
-            <div class="text-right">
-                @if($isSingleDiscipline)
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold bg-blue-500 text-white shadow-sm">
-                        Ranking: Not Required (Single Candidate)
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-teal-500/20 text-teal-200 border border-teal-400/30">
+                        {{ $results['discipline']->discipline_name }}
                     </span>
-                    <span class="text-xs text-teal-200 block mt-1">Sole Nominee Confirmed</span>
-                @else
-                    <span class="text-xs text-teal-200 uppercase tracking-wider block">Submitted Ballots</span>
-                    <span class="text-xl font-extrabold text-white">{{ $results['submissions_count'] }} Completed</span>
-                @endif
+                    @if($isSingleDiscipline)
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-blue-500 text-white shadow-sm">
+                            Ranking: Not Required (Single Candidate)
+                        </span>
+                    @endif
+                </div>
+                <h2 class="text-lg font-bold mt-1.5 text-white">Aggregated Candidate Preference Standings</h2>
+                <p class="text-xs text-slate-300 mt-0.5">
+                    @if($isSingleDiscipline)
+                        Sole Nominee Confirmed &bull; Academic ranking not required for single-candidate discipline.
+                    @else
+                        Executive composite ranking calculated across all completed ballots.
+                    @endif
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <div class="text-left sm:text-right">
+                    @if($isSingleDiscipline)
+                        <span class="text-xs text-teal-200 block">Status</span>
+                        <span class="text-sm font-bold text-white">Sole Nominee Confirmed</span>
+                    @else
+                        <span class="text-[10px] text-teal-200 uppercase tracking-wider block font-semibold">Submitted Ballots</span>
+                        <span class="text-lg font-extrabold text-white">{{ $results['submissions_count'] }} Completed</span>
+                    @endif
+                </div>
+
+                {{-- View Mode Switcher --}}
+                <div class="inline-flex items-center bg-slate-800/90 p-1 rounded-xl border border-slate-700/80 text-xs shadow-inner">
+                    <button type="button" 
+                            @click="viewMode = 'vertical'" 
+                            :class="viewMode === 'vertical' ? 'bg-teal-600 text-white font-bold shadow-xs' : 'text-slate-300 hover:text-white'" 
+                            class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                        </svg>
+                        <span>Vertical View</span>
+                    </button>
+                    <button type="button" 
+                            @click="viewMode = 'horizontal'" 
+                            :class="viewMode === 'horizontal' ? 'bg-teal-600 text-white font-bold shadow-xs' : 'text-slate-300 hover:text-white'" 
+                            class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        <span>Horizontal Matrix</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -101,15 +139,297 @@
             </div>
         @else
             {{-- Tie-break rules note --}}
-            <div class="bg-slate-50 px-6 py-2.5 border-b border-slate-200 text-[11px] text-slate-600 flex items-center">
-                <svg class="w-3.5 h-3.5 text-teal-600 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span><strong>Tie-Breaking Standard:</strong> 1st: Lower Average Rank &bull; 2nd: Highest Rank 1 Count &bull; 3rd: Highest Rank 2 Count &bull; 4th: Candidate ID order</span>
+            <div class="bg-slate-50 px-6 py-2.5 border-b border-slate-200 text-[11px] text-slate-600 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center">
+                    <svg class="w-3.5 h-3.5 text-teal-600 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span><strong>Tie-Breaking Standard:</strong> 1st: Lower Average Rank &bull; 2nd: Highest Rank 1 Count &bull; 3rd: Highest Rank 2 Count &bull; 4th: Candidate ID order</span>
+                </div>
+                <div class="text-[10px] text-slate-500 font-medium">
+                    <span x-show="viewMode === 'vertical'">Displaying <strong>Vertical View</strong> (Optimized for voter legibility)</span>
+                    <span x-show="viewMode === 'horizontal'">Displaying <strong>Horizontal Matrix</strong> (Spreadsheet layout)</span>
+                </div>
             </div>
         @endif
 
-        <div class="overflow-x-auto">
+        {{-- Vertical View (Default) --}}
+        <div x-show="viewMode === 'vertical'" class="space-y-6 p-6 bg-slate-50/50">
+            {{-- Section A: Candidate Standings Leaderboard --}}
+            <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+                <div class="px-5 py-3.5 border-b border-slate-200 bg-slate-50/80 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Candidate Standings Leaderboard</h3>
+                        <p class="text-[11px] text-slate-500">Overall order of preference determined by voter consensus and tie-breaking criteria.</p>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-500">
+                        {{ count($results['candidates_results']) }} Candidate{{ count($results['candidates_results']) === 1 ? '' : 's' }}
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-700">
+                        <thead class="bg-slate-100/90 text-slate-700 uppercase tracking-wider text-[11px] border-b border-slate-200">
+                            <tr>
+                                <th scope="col" class="px-4 py-3 text-center w-16 font-bold">Pos</th>
+                                <th scope="col" class="px-6 py-3 font-semibold">Candidate</th>
+                                <th scope="col" class="px-4 py-3 font-semibold">Organisation</th>
+                                <th scope="col" class="px-4 py-3 text-center font-bold bg-teal-50/70 text-teal-900 border-l border-teal-100">Avg Rank</th>
+                                <th scope="col" class="px-4 py-3 text-center font-bold bg-amber-50/70 text-amber-900">Rank 1s</th>
+                                <th scope="col" class="px-4 py-3 text-center font-bold bg-slate-50/90 text-slate-800">Rank 2s</th>
+                                <th scope="col" class="px-4 py-3 text-center font-semibold">Total Ballots</th>
+                                <th scope="col" class="px-4 py-3 text-center font-semibold">Standing Status</th>
+                                <th scope="col" class="px-4 py-3 text-right font-semibold">Profile</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            @forelse($results['candidates_results'] as $index => $item)
+                                @php 
+                                    $candidate = $item['candidate']; 
+                                    $position = $item['position'] ?? ($index + 1);
+                                    $isTopRanked = $position === 1 && !$isSingleDiscipline && $item['total_submissions'] > 0;
+                                @endphp
+                                <tr class="hover:bg-slate-50/80 transition {{ $isTopRanked ? 'bg-amber-50/30' : '' }}">
+                                    <td class="px-4 py-3.5 text-center font-bold">
+                                        @if($isSingleDiscipline)
+                                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs bg-blue-100 text-blue-800 font-extrabold ring-2 ring-blue-400">
+                                                1
+                                            </span>
+                                        @elseif($position === 1)
+                                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs bg-amber-100 text-amber-900 font-black ring-2 ring-amber-400 shadow-2xs" title="1st Preference (Gold)">
+                                                1
+                                            </span>
+                                        @elseif($position === 2)
+                                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs bg-slate-200 text-slate-800 font-bold ring-1 ring-slate-300" title="2nd Preference (Silver)">
+                                                2
+                                            </span>
+                                        @elseif($position === 3)
+                                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs bg-amber-100/60 text-amber-900 font-bold ring-1 ring-amber-300" title="3rd Preference (Bronze)">
+                                                3
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs bg-slate-100 text-slate-600 font-semibold">
+                                                {{ $position }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-3.5">
+                                        <div class="flex items-center space-x-3">
+                                            <button type="button" 
+                                                    onclick="openCandidateModal({{ $candidate->id }})" 
+                                                    class="group relative focus:outline-none flex-shrink-0 cursor-pointer">
+                                                @if($candidate->photo_path)
+                                                    <img src="{{ $candidate->photo_path }}" alt="{{ $candidate->candidate_name }}" class="w-10 h-10 rounded-full object-cover object-top border-2 border-slate-200 group-hover:border-teal-500 transition shadow-2xs">
+                                                @else
+                                                    <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-800 group-hover:bg-teal-200 border-2 border-slate-200 group-hover:border-teal-500 flex items-center justify-center font-bold text-xs transition shadow-2xs">
+                                                        {{ substr($candidate->candidate_name, 0, 2) }}
+                                                    </div>
+                                                @endif
+                                            </button>
+                                            <div class="min-w-0">
+                                                <button type="button" 
+                                                        onclick="openCandidateModal({{ $candidate->id }})" 
+                                                        class="font-bold text-slate-900 hover:text-teal-700 text-xs sm:text-sm block leading-tight text-left transition truncate cursor-pointer">
+                                                    {{ $candidate->candidate_name }}
+                                                </button>
+                                                <span class="text-[11px] text-slate-500 block truncate">{{ $candidate->sub_discipline ?? 'General' }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3.5 text-xs text-slate-600">
+                                        {{ $candidate->organisation ?: 'Academy of Sciences Malaysia' }}
+                                    </td>
+                                    <td class="px-4 py-3.5 text-center bg-teal-50/70 border-l border-teal-100">
+                                        @if($isSingleDiscipline)
+                                            <span class="text-xs font-semibold text-slate-400">N/A</span>
+                                        @elseif($item['average_rank'] > 0)
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-black bg-teal-100 text-teal-900 border border-teal-200 shadow-2xs">
+                                                {{ number_format($item['average_rank'], 2) }}
+                                            </span>
+                                        @else
+                                            <span class="text-xs font-semibold text-slate-400">N/A</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3.5 text-center bg-amber-50/70">
+                                        @if($isSingleDiscipline)
+                                            <span class="text-slate-400">-</span>
+                                        @else
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold {{ $item['rank_1_count'] > 0 ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'text-slate-400' }}">
+                                                {{ $item['rank_1_count'] }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3.5 text-center bg-slate-50/90">
+                                        @if($isSingleDiscipline)
+                                            <span class="text-slate-400">-</span>
+                                        @else
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold {{ $item['rank_2_count'] > 0 ? 'bg-slate-200 text-slate-800 border border-slate-300' : 'text-slate-400' }}">
+                                                {{ $item['rank_2_count'] }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3.5 text-center font-medium text-xs text-slate-600">
+                                        {{ $isSingleDiscipline ? 1 : $item['total_submissions'] }}
+                                    </td>
+                                    <td class="px-4 py-3.5 text-center">
+                                        @if($isSingleDiscipline)
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                                                Sole Nominee
+                                            </span>
+                                        @elseif($item['total_submissions'] === 0)
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600">
+                                                Awaiting Votes
+                                            </span>
+                                        @elseif(!empty($item['is_tie']))
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                                                Tied Rank {{ $position }}
+                                            </span>
+                                        @elseif($position === 1)
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-2xs">
+                                                Top Preference
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-700">
+                                                Rank {{ $position }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3.5 text-right whitespace-nowrap">
+                                        <button type="button" 
+                                                onclick="openCandidateModal({{ $candidate->id }})" 
+                                                class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold text-teal-700 bg-teal-50 border border-teal-200 hover:bg-teal-100 transition shadow-2xs cursor-pointer">
+                                            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                            View Profile
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="9" class="px-6 py-8 text-center text-slate-400">
+                                        No candidate rankings recorded yet for this discipline and exercise.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{-- Section B: Individual Voter Ballot Breakdown (Transposed Vertical Layout) --}}
+            @if(!$isSingleDiscipline && count($results['voters']) > 0)
+                <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+                    <div class="px-5 py-3.5 border-b border-slate-200 bg-slate-50/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Individual Voter Ballot Breakdown</h3>
+                            <p class="text-[11px] text-slate-500">Each completed voter ballot transposed into rows with candidate rankings shown in columns.</p>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+                            {{ count($results['voters']) }} Voter Ballot{{ count($results['voters']) === 1 ? '' : 's' }}
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-700">
+                            <thead class="bg-slate-100 text-slate-700 uppercase tracking-wider text-[11px] border-b border-slate-200">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3 text-center w-12 font-bold">#</th>
+                                    <th scope="col" class="px-6 py-3 font-semibold min-w-[200px]">Voter Name & Affiliation</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold w-40">Submitted At</th>
+                                    {{-- Candidate Columns --}}
+                                    @foreach($results['candidates_results'] as $cItem)
+                                        @php $cand = $cItem['candidate']; @endphp
+                                        <th scope="col" class="px-4 py-3 text-center font-bold border-l border-slate-200 bg-slate-50 min-w-[140px]">
+                                            <div class="flex flex-col items-center">
+                                                <button type="button" onclick="openCandidateModal({{ $cand->id }})" class="hover:underline font-bold text-slate-900 text-xs truncate max-w-[130px] cursor-pointer">
+                                                    {{ $cand->candidate_name }}
+                                                </button>
+                                                <span class="text-[9px] text-teal-700 font-semibold">Rank #{{ $cItem['position'] ?? $loop->iteration }}</span>
+                                            </div>
+                                        </th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                @foreach($results['voters'] as $vIndex => $voter)
+                                    <tr class="hover:bg-slate-50/80 transition">
+                                        <td class="px-4 py-3 text-center text-slate-400 font-semibold text-[11px]">
+                                            {{ $vIndex + 1 }}
+                                        </td>
+                                        <td class="px-6 py-3">
+                                            <span class="font-bold text-slate-900 text-xs block leading-tight">{{ $voter['name'] }}</span>
+                                            <span class="text-[10px] text-slate-500">{{ $voter['email'] }}</span>
+                                        </td>
+                                        <td class="px-4 py-3 text-slate-600 text-[11px] whitespace-nowrap">
+                                            {{ !empty($voter['submitted_at']) ? \Carbon\Carbon::parse($voter['submitted_at'])->format('d M Y, h:i A') : 'Completed' }}
+                                        </td>
+
+                                        {{-- Candidate Ranks --}}
+                                        @foreach($results['candidates_results'] as $cItem)
+                                            @php $rn = $cItem['ranks'][$voter['id']] ?? null; @endphp
+                                            <td class="px-4 py-3 text-center font-bold border-l border-slate-100">
+                                                @if($rn === 1)
+                                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-black bg-amber-100 text-amber-900 ring-1 ring-amber-300 shadow-2xs">
+                                                        1
+                                                    </span>
+                                                @elseif($rn === 2)
+                                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-bold bg-slate-200 text-slate-800 ring-1 ring-slate-300">
+                                                        2
+                                                    </span>
+                                                @elseif($rn)
+                                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-semibold bg-teal-50 text-teal-800 border border-teal-200">
+                                                        {{ $rn }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-slate-300">-</span>
+                                                @endif
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot class="bg-slate-100/90 border-t-2 border-slate-300 text-slate-800 text-xs">
+                                <tr class="font-bold">
+                                    <td colspan="3" class="px-6 py-3 text-right uppercase tracking-wider text-[11px] text-teal-900">
+                                        Average Rank
+                                    </td>
+                                    @foreach($results['candidates_results'] as $cItem)
+                                        <td class="px-4 py-3 text-center border-l border-slate-200 font-black text-sm bg-teal-50 text-teal-900">
+                                            {{ $cItem['average_rank'] > 0 ? number_format($cItem['average_rank'], 2) : 'N/A' }}
+                                        </td>
+                                    @endforeach
+                                </tr>
+                                <tr class="font-semibold text-slate-700">
+                                    <td colspan="3" class="px-6 py-2.5 text-right uppercase tracking-wider text-[10px] text-amber-900">
+                                        Rank 1 Votes Count
+                                    </td>
+                                    @foreach($results['candidates_results'] as $cItem)
+                                        <td class="px-4 py-2.5 text-center border-l border-slate-200 font-bold bg-amber-50 text-amber-900">
+                                            {{ $cItem['rank_1_count'] }}
+                                        </td>
+                                    @endforeach
+                                </tr>
+                                <tr class="font-semibold text-slate-700">
+                                    <td colspan="3" class="px-6 py-2.5 text-right uppercase tracking-wider text-[10px] text-slate-700">
+                                        Rank 2 Votes Count
+                                    </td>
+                                    @foreach($results['candidates_results'] as $cItem)
+                                        <td class="px-4 py-2.5 text-center border-l border-slate-200 font-bold bg-slate-50 text-slate-800">
+                                            {{ $cItem['rank_2_count'] }}
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+        {{-- Horizontal Matrix View (Spreadsheet Mode) --}}
+        <div x-show="viewMode === 'horizontal'" class="overflow-x-auto">
             <table class="w-full text-left text-xs text-slate-700">
                 <thead class="bg-slate-100 text-slate-700 uppercase tracking-wider text-[11px] border-b border-slate-200">
                     <tr>
@@ -152,7 +472,9 @@
                                         </div>
                                     @endif
                                     <div>
-                                        <span class="font-bold text-slate-900 text-xs block leading-tight">{{ $candidate->candidate_name }}</span>
+                                        <button type="button" onclick="openCandidateModal({{ $candidate->id }})" class="font-bold text-slate-900 hover:text-teal-700 text-xs block leading-tight text-left cursor-pointer">
+                                            {{ $candidate->candidate_name }}
+                                        </button>
                                         <span class="text-[10px] text-slate-500">{{ $candidate->sub_discipline ?? 'General' }}</span>
                                     </div>
                                 </div>
@@ -313,4 +635,6 @@
         </div>
     </div>
 </div>
+
+<x-candidate-modal />
 @endsection
