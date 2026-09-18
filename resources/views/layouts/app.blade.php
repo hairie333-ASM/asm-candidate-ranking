@@ -141,9 +141,6 @@
                             <a href="{{ route('home') }}" class="px-3 py-1.5 rounded-md text-sm font-medium {{ request()->routeIs('home') ? 'bg-[#008442] text-white font-semibold' : 'text-slate-200 hover:bg-[#302556] hover:text-white' }}">
                                 Home
                             </a>
-                            <a href="{{ route('other-information') }}" class="px-3 py-1.5 rounded-md text-sm font-medium {{ request()->routeIs('other-information') ? 'bg-[#008442] text-white font-semibold' : 'text-slate-200 hover:bg-[#302556] hover:text-white' }}">
-                                Other Information
-                            </a>
                             <a href="{{ route('login') }}" class="px-3 py-1.5 rounded-md text-sm font-medium {{ request()->routeIs('login') ? 'bg-[#008442] text-white font-semibold' : 'text-slate-200 hover:bg-[#302556] hover:text-white' }}">
                                 Login
                             </a>
@@ -236,7 +233,6 @@
             <div x-show="mobileOpen" x-cloak class="md:hidden bg-[#241c42] px-2 pt-2 pb-3 space-y-1 border-b border-white/10">
                 @guest
                     <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-[#302556]">Home</a>
-                    <a href="{{ route('other-information') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-[#302556]">Other Information</a>
                     <a href="{{ route('login') }}" class="block px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-[#302556]">Login</a>
                 @else
                     <div class="px-3 py-2 border-b border-white/10 text-xs text-slate-300">

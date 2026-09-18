@@ -34,52 +34,54 @@
                             <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
                     @endif
+                    <a href="{{ route('other-information') }}" class="inline-flex items-center px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm transition">
+                        Ranking Guidelines & FAQs
+                    </a>
                 @endguest
-                <a href="{{ route('other-information') }}" class="inline-flex items-center px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm transition">
-                    Ranking Guidelines & FAQs
-                </a>
             </div>
         </div>
     </div>
 
-    <!-- Core Methodology & Rules -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-            <div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-lg">
-                1
+    <!-- Core Methodology & Rules (Authenticated Only) -->
+    @auth
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                <div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-lg">
+                    1
+                </div>
+                <h3 class="text-base font-bold text-slate-900">Ordinal Ranking Methodology</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Candidates must be ranked strictly from <strong>Rank 1 (Highest Preference)</strong> to <strong>Rank N (Lowest Preference)</strong>. Every candidate receives exactly one ranking number, with zero skips and zero duplicates allowed.
+                </p>
             </div>
-            <h3 class="text-base font-bold text-slate-900">Ordinal Ranking Methodology</h3>
-            <p class="text-sm text-slate-600 leading-relaxed">
-                Candidates must be ranked strictly from <strong>Rank 1 (Highest Preference)</strong> to <strong>Rank N (Lowest Preference)</strong>. Every candidate receives exactly one ranking number, with zero skips and zero duplicates allowed.
-            </p>
-        </div>
 
-        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-            <div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-lg">
-                2
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                <div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-lg">
+                    2
+                </div>
+                <h3 class="text-base font-bold text-slate-900">Real-Time Duplicate Prevention</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    The interactive ranking board prevents duplicate numbers at the moment of selection. Choosing Rank 1 immediately locks it for other candidates, guaranteeing a smooth and error-free evaluation experience.
+                </p>
             </div>
-            <h3 class="text-base font-bold text-slate-900">Real-Time Duplicate Prevention</h3>
-            <p class="text-sm text-slate-600 leading-relaxed">
-                The interactive ranking board prevents duplicate numbers at the moment of selection. Choosing Rank 1 immediately locks it for other candidates, guaranteeing a smooth and error-free evaluation experience.
-            </p>
-        </div>
 
-        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-            <div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-lg">
-                3
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                <div class="w-10 h-10 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-bold text-lg">
+                    3
+                </div>
+                <h3 class="text-base font-bold text-slate-900">Due Diligence & Nomination Dossiers</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Clicking candidate names opens quick information modals and direct links to full OneDrive nomination packages. Authorised reviewers and fellows can submit due diligence observations across all 8 disciplines.
+                </p>
             </div>
-            <h3 class="text-base font-bold text-slate-900">Due Diligence & Nomination Dossiers</h3>
-            <p class="text-sm text-slate-600 leading-relaxed">
-                Clicking candidate names opens quick information modals and direct links to full OneDrive nomination packages. Authorised reviewers and fellows can submit due diligence observations across all 8 disciplines.
-            </p>
         </div>
-    </div>
+    @endauth
 
     <!-- 8 Disciplines Overview -->
     <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-5">
         <div class="flex items-center justify-between border-b border-slate-100 pb-4">
             <div>
-                <h2 class="text-xl font-bold text-slate-900">The 8 Shortlisted Disciplines</h2>
+                <h2 class="text-xl font-bold text-slate-900">The 8 Disciplines</h2>
                 <p class="text-xs text-slate-500 mt-0.5">Authorised Voting Users are assigned to evaluate candidates within their designated discipline.</p>
             </div>
         </div>
