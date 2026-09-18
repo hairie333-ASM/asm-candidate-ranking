@@ -85,14 +85,29 @@
 
             {{-- Nominees List (Just Text, no boxes, no cards, no photos) --}}
             @if(!empty($dossier['shortlisted_nominees']))
+                @php
+                    $honorifics = ['dato', 'datuk', 'prof', 'professor', 'profesor', 'puan', 'encik', 'madam', 'tuan', 'raja', 'syed', 'seri', 'tan', 'sri'];
+                @endphp
                 <ol class="list-decimal list-inside space-y-1 pl-2 text-slate-900 font-medium">
                     @foreach($dossier['shortlisted_nominees'] as $index => $nomineeName)
                         @php
-                            // Match with database candidate model
-                            $candModel = $candidates->first(function($c) use ($nomineeName) {
-                                return str_contains(strtolower($c->candidate_name), strtolower(str_replace(['@', 'Bin', 'Dr', 'Profesor', 'Professor', 'Ts', 'Ir', 'ChM', 'TPr', 'Dato\'', 'Dato’', 'Tan Sri', 'Madam', 'Ms', 'YM'], '', $nomineeName)))
-                                    || str_contains(strtolower($nomineeName), strtolower(Str::limit($c->candidate_name, 15, '')));
-                            }) ?? ($candidates[$index] ?? null);
+                            if (isset($candidates) && $candidates->count() === count($dossier['shortlisted_nominees']) && isset($candidates[$index])) {
+                                $candModel = $candidates[$index];
+                            } else {
+                                $words = array_filter(
+                                    explode(' ', strtolower(preg_replace('/[^a-zA-Z\s]/', '', $nomineeName))),
+                                    fn($w) => strlen($w) >= 4 && !in_array($w, $honorifics)
+                                );
+                                $candModel = isset($candidates) ? $candidates->first(function($c) use ($words) {
+                                    $cName = strtolower($c->candidate_name);
+                                    foreach ($words as $w) {
+                                        if (str_contains($cName, $w)) {
+                                            return true;
+                                        }
+                                    }
+                                    return false;
+                                }) : null;
+                            }
                         @endphp
                         <li>
                             @if($candModel)

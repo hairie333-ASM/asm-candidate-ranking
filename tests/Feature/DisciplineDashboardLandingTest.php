@@ -224,6 +224,30 @@ class DisciplineDashboardLandingTest extends TestCase
             'active' => true,
         ]);
 
+        $cand1 = Candidate::create([
+            'discipline_id' => $discipline->id,
+            'candidate_name' => 'Dato’ Professor Ir Dr Ahmad Farhan Mohd Sadallah',
+            'organisation' => 'Universiti Sains Malaysia',
+            'active' => true,
+            'display_order' => 1,
+        ]);
+
+        $cand2 = Candidate::create([
+            'discipline_id' => $discipline->id,
+            'candidate_name' => 'Professor Ir Dr Ching Yern Chee',
+            'organisation' => 'Universiti Malaya',
+            'active' => true,
+            'display_order' => 2,
+        ]);
+
+        $cand3 = Candidate::create([
+            'discipline_id' => $discipline->id,
+            'candidate_name' => 'Professor Ir Dr Faridah Othman',
+            'organisation' => 'Universiti Malaya',
+            'active' => true,
+            'display_order' => 3,
+        ]);
+
         $voter = User::create([
             'name' => 'Dr. ES Voter',
             'email' => 'es.voter@akademisains.gov.my',
@@ -242,6 +266,9 @@ class DisciplineDashboardLandingTest extends TestCase
         $response->assertSee('Twenty-two (22) nominees were evaluated');
         $response->assertSee('ten (10) nominees for the ES Discipline Group');
         $response->assertSee('Ahmad Farhan Mohd Sadullah');
+        $response->assertSee('openCandidateModal('.$cand1->id.')', false);
+        $response->assertSee('openCandidateModal('.$cand2->id.')', false);
+        $response->assertSee('openCandidateModal('.$cand3->id.')', false);
     }
 
     public function test_mhs_user_automatically_lands_on_mhs_dossier(): void
