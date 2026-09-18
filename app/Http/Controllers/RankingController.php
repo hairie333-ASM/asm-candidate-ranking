@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RankingSubmissionRequest;
 use App\Models\Candidate;
 use App\Models\Discipline;
+use App\Models\RankingExercise;
 use App\Models\User;
 use App\Services\RankingService;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -34,6 +35,7 @@ class RankingController extends Controller
         $exercise = $this->rankingService->getActiveExercise();
         if (! $exercise) {
             return view('ranking.closed', [
+                'exercise' => RankingExercise::latest()->first(),
                 'message' => 'There is currently no active ranking exercise available.',
             ]);
         }

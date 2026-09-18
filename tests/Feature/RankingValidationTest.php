@@ -285,4 +285,35 @@ class RankingValidationTest extends TestCase
             'ranking_number' => 1,
         ]);
     }
+
+    /**
+     * Test 8: Visiting ranking when exercise is Closed renders ranking.closed without error.
+     */
+    public function test_closed_ranking_exercise_renders_view_without_error(): void
+    {
+        $this->exercise->update(['status' => 'Closed']);
+
+        $response = $this->actingAs($this->voter)->get(route('ranking.index'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('ranking.closed');
+        $response->assertSee('Ranking Exercise Not Active');
+        $response->assertSee('Fellowship 2026 Ranking');
+        $response->assertSee('Closed');
+    }
+
+    /**
+     * Test 9: Visiting ranking when no exercise exists renders ranking.closed without error.
+     */
+    public function test_no_ranking_exercise_renders_closed_view_without_error(): void
+    {
+        RankingExercise::query()->delete();
+
+        $response = $this->actingAs($this->voter)->get(route('ranking.index'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('ranking.closed');
+        $response->assertSee('Ranking Exercise Not Active');
+        $response->assertSee('There is currently no active ranking exercise');
+    }
 }

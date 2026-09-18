@@ -14,13 +14,15 @@
         <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Ranking Exercise Not Active</h1>
         
         <p class="text-slate-600 max-w-xl mx-auto mb-8">
-            @if($exercise)
+            @if(isset($exercise) && $exercise)
                 The ranking exercise <strong class="text-slate-800">"{{ $exercise->title }}"</strong> is currently <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 uppercase tracking-wide">{{ $exercise->status }}</span>.
                 @if($exercise->status === 'Scheduled')
                     It is scheduled to open on {{ $exercise->start_date ? $exercise->start_date->format('d M Y, h:i A') : 'a later date' }}.
                 @elseif($exercise->status === 'Closed')
                     It officially concluded on {{ $exercise->end_date ? $exercise->end_date->format('d M Y, h:i A') : 'the deadline' }}.
                 @endif
+            @elseif(isset($message) && $message)
+                {{ $message }}
             @else
                 There is currently no active ranking exercise configured in the system.
             @endif
